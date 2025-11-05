@@ -1,0 +1,41 @@
+{
+  "site": {
+    "title": "Cyber Portfolio",
+    "boot": {
+      "welcome": "System initialization…",
+      "choose": "Choose your language",
+      "fr": "Français",
+      "en": "English",
+      "skip": "Skip"
+    },
+    "nav": {
+      "about": "About",
+      "manifesto": "Manifesto",
+      "projects": "Projects",
+      "testimonials": "Testimonials",
+      "contact": "Contact",
+      "pgp": "PGP Key"
+    }
+  },
+  "sections": {
+    "about": {
+      "title": "About"
+    },
+    "manifesto": {
+      "title": "Manifesto"
+    },
+    "projects": {
+      "title": "Projects"
+    },
+    "testimonials": {
+      "title": "Testimonials"
+    },
+    "contact": {
+      "title": "Contact"
+    },
+    "pgp": {
+      "title": "PGP Key"
+    }
+  }
+}
+

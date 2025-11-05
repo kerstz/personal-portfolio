@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+dist
+build
+*.config.js
+*.config.ts
+.eslintrc.js
+next-env.d.ts
+public
+.vercel
+.cache
+*.min.js
+generated
+

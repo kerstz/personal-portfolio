@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   @map("passwordHash")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ProjectStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       Json          // { fr: string, en: string }
+  summary     Json          // { fr: string, en: string }
+  description Json?         // { fr: string, en: string }
+  content     Json?         // { fr: markdown, en: markdown }
+  stack       Json          // ["Next.js","TypeScript",...]
+  role        String?
+  links       Json?         // { repo?: string, demo?: string }
+  images      Json?         // [{ src, alt:{fr,en} }]
+  status      ProjectStatus @default(IN_PROGRESS)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  author    String
+  role      String?
+  company   String?
+  quote     Json      // { fr: string, en: string }
+  photoUrl  String?
+  links     Json?     // { linkedin?: string, github?: string }
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Certificate {
+  id        String   @id @default(cuid())
+  title     String
+  issuer    String
+  year      Int?
+  url       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PgpKey {
+  id          String    @id @default(cuid())
+  publicKey   String?   // ASCII-armored
+  fingerprint String?
+  keyId       String?
+  algorithm   String?
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SiteContent {
+  id           String   @id @default(cuid())
+  // Hero section
+  heroTitle    Json?    // { fr?, en? }
+  heroSubtitle Json?    // { fr?, en? }
+  heroDescription Json? // { fr?, en? }
+  // About section
+  aboutTitle   Json?    // { fr?, en? }
+  aboutContent Json?    // { fr?, en? }
+  // Manifesto section
+  manifestoTitle Json?  // { fr?, en? }
+  manifestoContent Json? // { fr?, en? }
+  // Contact
+  contactEmail String?
+  // Theme
+  theme        Json?    // { default?: "professional", crtEnabled?: boolean }
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
