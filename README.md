@@ -194,7 +194,6 @@ Add more languages by creating new JSON files and updating the configuration.
 The portfolio includes multiple theme options:
 
 1. **Professional**: Clean, modern design
-2. **Cyber**: Cyberpunk aesthetic with neon effects
 3. **OS**: Operating system-style interface
 
 Themes can be switched through the admin panel.
@@ -275,13 +274,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🙏 Acknowledgments
-
-- Design inspired by cyberpunk and cypherpunk aesthetics
-- Matrix rain effect for nostalgic vibes
-- Built with modern web technologies
-
----
-
-**Made with ❤️ and a lot of cyberpunk** 🌃
 
