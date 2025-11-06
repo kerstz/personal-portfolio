@@ -17,7 +17,6 @@ A modern, immersive cyberpunk-themed portfolio with dynamic administration.
 - 💼 Dynamic projects showcase
 - 📧 Contact form
 - 🔒 Secure authentication with `iron-session`
-- 🎮 Multiple themes (Professional, Cyber, OS-style)
 - ⚡ Terminal emulator with custom commands
 - 🎨 3D graphics with Three.js
 
