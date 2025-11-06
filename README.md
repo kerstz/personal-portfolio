@@ -189,15 +189,6 @@ The project supports multiple languages using `next-intl`. Translation files are
 
 Add more languages by creating new JSON files and updating the configuration.
 
-## 🎨 Themes
-
-The portfolio includes multiple theme options:
-
-1. **Professional**: Clean, modern design
-3. **OS**: Operating system-style interface
-
-Themes can be switched through the admin panel.
-
 ## 📦 Environment Variables
 
 Create a `.env.local` file in the root directory:
