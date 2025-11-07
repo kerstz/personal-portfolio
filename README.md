@@ -8,6 +8,10 @@ A modern, immersive cyberpunk-themed portfolio with dynamic administration.
 ![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38bdf8?logo=tailwindcss)
 
+<img width="1732" height="872" alt="Screenshot_20251107_095850" src="https://github.com/user-attachments/assets/6af1a3f7-76b6-4a1d-aaa1-90d7a6a2105a" />
+<img width="1751" height="868" alt="Screenshot_20251107_100105" src="https://github.com/user-attachments/assets/518ce30f-da3c-43ca-9d65-b63f9365e04b" />
+
+
 ## ✨ Features
 
 - 🎨 Immersive design with scroll-snap navigation
