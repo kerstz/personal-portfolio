@@ -173,7 +173,7 @@ export default function Taskbar() {
                 <div className="border-t border-zinc-700 my-2" />
                 <StartMenuItem icon="⚙️" text="Paramètres" onClick={() => openSettings()} />
                 <StartMenuItem icon="🔒" text="Admin Panel" onClick={() => { window.location.href = '/login'; setShowStartMenu(false) }} />
-                <StartMenuItem icon="🌐" text="GitHub" onClick={() => { window.open('https://github.com', '_blank'); setShowStartMenu(false) }} />
+                <StartMenuItem icon="🌐" text="GitHub" onClick={() => { window.open('https://github.com', '_blank', 'noopener,noreferrer'); setShowStartMenu(false) }} />
               </div>
             </div>
           </motion.div>

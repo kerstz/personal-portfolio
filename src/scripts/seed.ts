@@ -4,8 +4,11 @@ import { PrismaClient } from '../generated/prisma';
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = process.env.ADMIN_EMAIL || 'admin@example.com';
-  const password = process.env.ADMIN_PASSWORD || 'change-this-password';
+  const email = (process.env.ADMIN_EMAIL || '').trim();
+  const password = process.env.ADMIN_PASSWORD || '';
+  if (!email || password.length < 12) {
+    throw new Error('ADMIN_EMAIL et ADMIN_PASSWORD (>= 12 caractères) doivent être définis.');
+  }
   const passwordHash = await bcrypt.hash(password, 12);
 
   // Upsert admin user
