@@ -2,8 +2,16 @@
 
 import { useEffect, useState } from 'react'
 
+type TestimonialItem = {
+  id: string
+  author: string
+  role?: string | null
+  company?: string | null
+  quote?: { fr?: string; en?: string } | null
+}
+
 export default function AdminTestimonialsPage() {
-  const [items, setItems] = useState<any[]>([])
+  const [items, setItems] = useState<TestimonialItem[]>([])
   const [author, setAuthor] = useState('')
   const [role, setRole] = useState('')
   const [company, setCompany] = useState('')
@@ -54,7 +62,7 @@ export default function AdminTestimonialsPage() {
               <div className="flex-1">
                 <div className="font-semibold">{item.author}</div>
                 {item.role && <div className="text-sm text-zinc-400">{item.role}{item.company ? ` @ ${item.company}` : ''}</div>}
-                <div className="mt-2 text-sm italic">"{item.quote?.fr || item.quote?.en || ''}"</div>
+                <div className="mt-2 text-sm italic">&quot;{item.quote?.fr || item.quote?.en || ''}&quot;</div>
               </div>
               <div className="flex gap-2 ml-4">
                 <button

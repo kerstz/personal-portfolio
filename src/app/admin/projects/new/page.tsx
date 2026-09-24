@@ -212,7 +212,7 @@ export default function NewProjectPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">URL de l'image</label>
+              <label className="block text-sm font-medium mb-2">URL de l&apos;image</label>
               <input
                 type="url"
                 value={formData.imageUrl}

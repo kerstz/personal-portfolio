@@ -42,7 +42,7 @@ export default function TestimonialsCarousel() {
           <img src={item.photoUrl} alt={item.author} className="w-12 h-12 rounded-full border border-zinc-600" />
         )}
         <div className="flex-1">
-          <blockquote className="text-zinc-200 italic mb-3">"{quote}"</blockquote>
+          <blockquote className="text-zinc-200 italic mb-3">&quot;{quote}&quot;</blockquote>
           <footer className="text-sm">
             <div className="font-semibold">{item.author}</div>
             {item.role && <div className="text-zinc-400">{item.role}{item.company ? ` @ ${item.company}` : ''}</div>}
