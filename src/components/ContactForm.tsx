@@ -110,7 +110,7 @@ export default function ContactForm() {
               className="mt-1 accent-blue-500"
             />
             <span className="text-slate-400">
-              J'accepte que mes données soient utilisées pour répondre à ma demande (RGPD).
+              J&apos;accepte que mes données soient utilisées pour répondre à ma demande (RGPD).
             </span>
           </label>
           <button

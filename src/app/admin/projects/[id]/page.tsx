@@ -70,7 +70,7 @@ export default function EditProjectPage() {
     }
   }
 
-  const updateProject = (field: string, value: any) => {
+  const updateProject = (field: string, value: unknown) => {
     if (!project) return
     setProject({ ...project, [field]: value })
   }
@@ -79,7 +79,7 @@ export default function EditProjectPage() {
     if (!project) return
     setProject({
       ...project,
-      [parent]: { ...(project as any)[parent], [field]: value }
+      [parent]: { ...(project as unknown as Record<string, object>)[parent], [field]: value }
     })
   }
 
@@ -236,7 +236,7 @@ export default function EditProjectPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">URL de l'image</label>
+              <label className="block text-sm font-medium mb-2">URL de l&apos;image</label>
               <input
                 type="url"
                 value={project.imageUrl || ''}
