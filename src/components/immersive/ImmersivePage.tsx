@@ -88,12 +88,12 @@ export default function ImmersivePage() {
                     ) : (
                       <>
                         <p>
-                          Développeur passionné avec plus de 5 ans d'expérience dans le développement d'applications web modernes. 
+                          Développeur passionné avec plus de 5 ans d&apos;expérience dans le développement d&apos;applications web modernes. 
                           Je me spécialise dans les technologies React, Next.js et Node.js, avec un fort intérêt pour la cybersécurité 
                           et la protection de la vie privée.
                         </p>
                         <p>
-                          Adepte du mouvement cypherpunk, je crois fermement en l'importance de la cryptographie et des outils 
+                          Adepte du mouvement cypherpunk, je crois fermement en l&apos;importance de la cryptographie et des outils 
                           de protection de la vie privée pour préserver nos libertés numériques.
                         </p>
                       </>

@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 const navItems = [
@@ -13,6 +13,12 @@ const navItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  async function logout() {
+    await fetch('/api/admin/logout', { method: 'POST' })
+    router.push('/login')
+  }
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -22,12 +28,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <h1 className="text-xl font-semibold text-slate-100">TLC Admin Panel</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-slate-400">Connecté en tant qu&apos;admin</span>
-            <Link
-              href="/api/admin/logout"
+            <button
+              onClick={logout}
               className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm transition-colors"
             >
               Déconnexion
-            </Link>
+            </button>
           </div>
         </div>
       </header>
