@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAdmin } from '@/lib/auth'
+import { parseBody, siteSchema } from '@/lib/validation'
 
 const SITE_ID = 'site-singleton'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const guard = await requireAdmin(req)
+  if (!guard.ok) return guard.response
+
   try {
     const site = await prisma.siteContent.findUnique({ where: { id: SITE_ID } })
     return NextResponse.json(site || {
@@ -27,8 +31,11 @@ export async function PUT(req: NextRequest) {
   const guard = await requireAdmin(req)
   if (!guard.ok) return guard.response
   
+  const parsed = await parseBody(req, siteSchema)
+  if (!parsed.ok) return parsed.response
+  const data = parsed.data
+
   try {
-    const data = await req.json()
     const site = await prisma.siteContent.upsert({
       where: { id: SITE_ID },
       update: {
