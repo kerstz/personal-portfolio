@@ -1,272 +1,117 @@
-# 🌐 Cyber Portfolio
+# Personal Portfolio
 
-A modern, immersive cyberpunk-themed portfolio with dynamic administration.
+A bilingual (FR/EN) developer portfolio with a self-hosted admin panel to manage its content: projects, testimonials, about/manifesto sections and a PGP public key.
 
+[![CI](https://github.com/kerstz/personal-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/kerstz/personal-portfolio/actions/workflows/ci.yml)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![React](https://img.shields.io/badge/React-19-61dafb?logo=react)
-![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38bdf8?logo=tailwindcss)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-<img width="1732" height="872" alt="Screenshot_20251107_095850" src="https://github.com/user-attachments/assets/6af1a3f7-76b6-4a1d-aaa1-90d7a6a2105a" />
-<img width="1751" height="868" alt="Screenshot_20251107_100105" src="https://github.com/user-attachments/assets/518ce30f-da3c-43ca-9d65-b63f9365e04b" />
+<img width="1732" height="872" alt="Portfolio home page" src="https://github.com/user-attachments/assets/6af1a3f7-76b6-4a1d-aaa1-90d7a6a2105a" />
+<img width="1751" height="868" alt="Portfolio projects section" src="https://github.com/user-attachments/assets/518ce30f-da3c-43ca-9d65-b63f9365e04b" />
 
+## Features
 
-## ✨ Features
+- **Content managed from the admin panel**: hero, about, manifesto, projects, testimonials, PGP key
+- **French / English** content, switchable at runtime
+- **Project pages** with status, stack and links
+- **Contact form** via [Formspree](https://formspree.io)
+- **Security-first**: see [Security](#security)
 
-- 🎨 Immersive design with scroll-snap navigation
-- 🌍 i18n support (French/English) with `next-intl`
-- 📝 Complete admin panel for content management
-- 🔐 PGP key integration
-- 💼 Dynamic projects showcase
-- 📧 Contact form
-- 🔒 Secure authentication with `iron-session`
-- ⚡ Terminal emulator with custom commands
-- 🎨 3D graphics with Three.js
+## Tech stack
 
-## 🚀 Quick Start
+| Area | Choice |
+|---|---|
+| Framework | Next.js 15 (App Router), React 19 |
+| Language | TypeScript 5 |
+| Data | Prisma 6 + SQLite |
+| Auth | iron-session (encrypted, stateless cookie) + bcrypt |
+| Validation | Zod |
+| Styling | Tailwind CSS 4, Framer Motion |
 
-### Prerequisites
+## Getting started
 
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
+**Requirements:** Node.js 22+ (see `.nvmrc`), npm.
 
 ```bash
-# Clone the repository
-git clone https://github.com/berstz/personal-portfolio
-cd portfolio
-
-# Install dependencies
+git clone https://github.com/kerstz/personal-portfolio.git
+cd personal-portfolio
 npm install
 
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your configuration (see below)
+cp .env.example .env.local   # then fill in the values (see below)
 
-# Generate Prisma client
-npx prisma generate
-
-# Initialize database
-npx prisma migrate dev
-
-# Seed initial data (creates admin user)
-npm run db:seed
-
-# Run development server
+npm run db:migrate           # create the SQLite database
+npm run db:seed              # create the admin account + default content
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+The site runs on <http://localhost:3000> and the admin panel on <http://localhost:3000/login>.
 
-**Important**: Before running `npm run db:seed`, make sure you've configured `ADMIN_EMAIL` and `ADMIN_PASSWORD` in your `.env.local` file. These will be your admin credentials.
+## Configuration
 
-## 📁 Project Structure
+| Variable | Required | Description |
+|---|---|---|
+| `DATABASE_URL` | yes | SQLite path, relative to `prisma/schema.prisma` (e.g. `file:./dev.db`) |
+| `SESSION_PASSWORD` | yes | Session encryption key, **32+ characters**: `openssl rand -base64 32` |
+| `ADMIN_EMAIL` | for seeding | Admin login |
+| `ADMIN_PASSWORD` | for seeding | Admin password, 12+ characters |
+| `NEXT_PUBLIC_FORMSPREE_ID` | no | Formspree form ID for the contact form |
+
+Running `npm run db:seed` again updates the admin password from `ADMIN_PASSWORD`. Use it to reset the password.
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build / server |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript type check |
+| `npm run db:migrate` | Create/apply migrations (development) |
+| `npm run db:deploy` | Apply migrations (production) |
+| `npm run db:seed` | Create or update the admin account |
+
+## Project structure
 
 ```
 src/
-├── app/              # Next.js App Router pages
-│   ├── admin/       # Admin panel
-│   ├── api/         # API routes
-│   └── [locale]/    # Localized pages
-├── components/       # React components
-│   ├── immersive/   # Immersive theme components
-│   ├── OS/          # OS-style theme components
-│   └── CyberSite/   # Cyber theme components
-├── lib/             # Utility functions
-│   ├── auth.ts      # Authentication helpers
-│   ├── prisma.ts    # Prisma client
-│   └── session.ts   # Session management
-└── i18n/            # Internationalization
-    └── messages/    # Translation files
-
-prisma/
-├── schema.prisma    # Database schema
-└── migrations/      # Database migrations
-
-public/              # Static assets
+├── app/
+│   ├── [locale]/        # Public site (/fr, /en)
+│   ├── projects/[slug]/ # Project detail pages
+│   ├── login/           # Admin sign-in
+│   ├── admin/           # Admin panel
+│   └── api/             # Public (read-only) and admin API routes
+├── components/          # UI components
+├── lib/                 # Auth, session, validation, rate limiting, Prisma client
+├── i18n/messages/       # FR/EN strings
+└── middleware.ts        # Admin route protection
+prisma/                  # Schema and migrations
 ```
 
-## 🔧 Tech Stack
+## Security
 
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript 5
-- **Database**: SQLite + Prisma ORM
-- **Authentication**: iron-session
-- **UI Framework**: TailwindCSS 4
-- **3D Graphics**: Three.js + React Three Fiber
-- **Animations**: Framer Motion
-- **i18n**: next-intl
-- **Form Validation**: Zod
-- **Icons**: Phosphor Icons
+- Admin API routes require an authenticated session. Every write is validated with Zod: only `http(s)` URLs are accepted and field sizes are bounded.
+- Session cookie is encrypted, `HttpOnly`, `SameSite=Strict`, `__Host-` prefixed in production, and expires after 8 hours.
+- Mutating requests are checked for same-origin (CSRF defense in depth).
+- Login is rate limited per IP and per account, and takes the same time whether or not the account exists.
+- Strict security headers: CSP, HSTS, `frame-ancestors 'none'`, Permissions-Policy, COOP.
+- CI runs `npm audit` on every change. Dependabot keeps dependencies and GitHub Actions up to date.
 
-## 🛠️ Available Scripts
+To report a vulnerability, see [SECURITY.md](SECURITY.md).
+
+## Deployment
+
+The `Deploy` workflow runs after CI passes on `main`. It connects to the server over SSH and rebuilds the Docker Compose stack. It needs these repository secrets: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_KEY` and, recommended, `DEPLOY_HOST_FINGERPRINT`.
+
+For any other Node.js host:
 
 ```bash
-# Development
-npm run dev              # Start development server
-npm run build            # Build for production
-npm run start            # Start production server
-npm run lint             # Run ESLint
-
-# Database
-npx prisma studio        # Open Prisma Studio (DB GUI)
-npx prisma migrate dev   # Create new migration
-npm run db:seed          # Seed database with initial data
-
-# Prisma
-npm run prisma:generate  # Generate Prisma client
-npm run prisma:migrate   # Run migrations
+npm ci && npm run db:deploy && npm run build && npm start
 ```
 
-## 🔐 Admin Panel
+Serve the app over HTTPS behind a reverse proxy (e.g. Caddy, Nginx or Cloudflare).
 
-### Access
+## License
 
-The admin panel is accessible at `/admin` after logging in at `/login`.
-
-### Creating an Admin User
-
-Admin users are created during the database seeding process. The credentials are defined in your environment variables:
-
-**Step 1**: Set your admin credentials in `.env.local`:
-
-```env
-ADMIN_EMAIL="admin@example.com"
-ADMIN_PASSWORD="your-secure-password"
-```
-
-**Step 2**: Run the seed script to create the admin user:
-
-```bash
-npm run db:seed
-```
-
-This will create (or update) an admin user with the credentials specified in your `.env.local` file.
-
-### Managing Content
-
-Once logged in to the admin panel (`/admin`), you can manage:
-
-#### 1. **Site Content** (`/admin/site`)
-- Hero section (title, subtitle, description)
-- About section (title, content)
-- Manifesto section (title, content)
-- Contact email
-- Theme settings (Professional, Cyber, OS-style)
-- CRT effect toggle
-
-#### 2. **Projects** (`/admin/projects`)
-- Create, edit, and delete projects
-- Set project title, description, technologies used
-- Add images and links
-- Order projects by display priority
-- Set slug for URL-friendly project pages
-
-#### 3. **Testimonials** (`/admin/testimonials`)
-- Add and manage client testimonials
-- Set author name and role
-- Edit testimonial content
-- Show/hide testimonials
-
-#### 4. **PGP Key** (`/admin/pgp`)
-- Upload and manage your PGP public key
-- Set key fingerprint, ID, algorithm
-- Set expiration date
-- Public key is displayed on the main site and available for download
-
-### Resetting Admin Password
-
-If you need to reset the admin password:
-
-1. Update `ADMIN_PASSWORD` in your `.env.local`
-2. Run: `npm run db:seed`
-
-The seed script uses "upsert" logic, so it will update the existing admin user's password without creating a duplicate.
-
-## 🌍 Internationalization
-
-The project supports multiple languages using `next-intl`. Translation files are located in:
-- `src/i18n/messages/fr.json` (French)
-- `src/i18n/messages/en.json` (English)
-
-Add more languages by creating new JSON files and updating the configuration.
-
-## 📦 Environment Variables
-
-Create a `.env.local` file in the root directory:
-
-```env
-# Database
-DATABASE_URL="file:./prisma/dev.db"
-
-# Session (REQUIRED - must be at least 32 characters)
-SESSION_PASSWORD="your-secret-session-password-min-32-chars"
-
-# Admin credentials (used by npm run db:seed)
-ADMIN_EMAIL="admin@example.com"
-ADMIN_PASSWORD="your-secure-password"
-
-# App
-NODE_ENV="development"
-PORT=3000
-```
-
-### Environment Variables Explained
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | Path to SQLite database. For production, can use PostgreSQL or MySQL connection string |
-| `SESSION_PASSWORD` | Yes | Secret key for session encryption. **Must be at least 32 characters**. Generate with: `openssl rand -base64 32` |
-| `ADMIN_EMAIL` | Yes | Email/username for the admin user (used during seeding) |
-| `ADMIN_PASSWORD` | Yes | Password for the admin user (used during seeding) |
-| `NODE_ENV` | No | `development` or `production` |
-| `PORT` | No | Server port (default: 3000) |
-
-⚠️ **Security Notes**: 
-- Never commit your `.env.local` file to version control
-- Use strong passwords in production
-- Generate a secure `SESSION_PASSWORD` with: `openssl rand -base64 32`
-- Change default credentials before deploying
-
-## 🚀 Deployment
-
-### Build for Production
-
-```bash
-npm run build
-npm run start
-```
-
-### Database Setup
-
-The project uses SQLite by default. For production, consider using PostgreSQL or MySQL by updating the `DATABASE_URL` in your environment variables and the `provider` in `prisma/schema.prisma`.
-
-### Environment Variables
-
-Make sure to set all required environment variables on your hosting platform.
-
-### Hosting Options
-
-This project can be deployed on:
-- [Vercel](https://vercel.com) (recommended for Next.js)
-- [Netlify](https://netlify.com)
-- Any Node.js hosting platform
-- Self-hosted with PM2 or Docker
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-
+[MIT](LICENSE)

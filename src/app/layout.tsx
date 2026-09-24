@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -26,7 +31,7 @@ export default async function RootLayout({
   const lang = 'fr'
   return (
     <html lang={lang}>
-      <body className={`${geistMono.variable} antialiased bg-black text-zinc-100`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-zinc-100`}>
         {children}
       </body>
     </html>

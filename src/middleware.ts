@@ -1,46 +1,44 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { unsealData } from 'iron-session'
+import { sessionOptions, type AdminSession } from '@/lib/session'
+
+// Vérifie cryptographiquement le cookie (et pas seulement sa présence)
+async function isAuthenticated(req: NextRequest) {
+  const seal = req.cookies.get(sessionOptions.cookieName)?.value
+  if (!seal || !sessionOptions.password) return false
+  try {
+    const data = await unsealData<AdminSession>(seal, {
+      password: sessionOptions.password,
+      ttl: sessionOptions.ttl,
+    })
+    return Boolean(data.admin)
+  } catch {
+    return false
+  }
+}
 
 export async function middleware(req: NextRequest) {
-  const session = req.cookies.get('tlc_session')
-  const isAdminRoute = req.nextUrl.pathname.startsWith('/admin')
-  const isLoginPage = req.nextUrl.pathname === '/login'
+  const { pathname } = req.nextUrl
+  const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/')
+  const isLoginPage = pathname === '/login'
+  const authenticated = await isAuthenticated(req)
 
-  if (isAdminRoute && !session?.value) {
+  if (isAdminRoute && !authenticated) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
-  if (isLoginPage && session?.value) {
+  if (isLoginPage && authenticated) {
     return NextResponse.redirect(new URL('/admin', req.url))
   }
 
   const response = NextResponse.next()
-
-  // Security Headers
-  response.headers.set('X-Content-Type-Options', 'nosniff')
-  response.headers.set('X-Frame-Options', 'DENY')
-  response.headers.set('X-XSS-Protection', '1; mode=block')
-  response.headers.set('Referrer-Policy', 'no-referrer-when-downgrade')
-  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
-
-  // CSP (Content Security Policy)
-  const csp = `
-    default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline';
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' data:;
-    font-src 'self';
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    frame-ancestors 'none';
-    upgrade-insecure-requests;
-  `
-  response.headers.set('Content-Security-Policy', csp.replace(/\s{2,}/g, ' ').trim())
-
+  // Les pages d'administration ne doivent jamais être mises en cache ni indexées
+  response.headers.set('Cache-Control', 'no-store')
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow')
   return response
 }
 
 export const config = {
-  matcher: ['/admin/:path*']
+  matcher: ['/admin', '/admin/:path*', '/login'],
 }

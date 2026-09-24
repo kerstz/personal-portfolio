@@ -2,9 +2,15 @@
 
 import { useEffect, useState } from 'react'
 
+type SiteSettings = {
+  alias?: string
+  contact?: { email?: string }
+  theme?: { default?: string; crtEnabled?: boolean }
+}
+
 export default function AdminSitePage() {
   const [loading, setLoading] = useState(true)
-  const [data, setData] = useState<any>({ alias: 'Portfolio', contact: { email: '' }, theme: { default: 'neon', crtEnabled: false } })
+  const [data, setData] = useState<SiteSettings>({ alias: 'Portfolio', contact: { email: '' }, theme: { default: 'neon', crtEnabled: false } })
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
